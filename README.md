@@ -89,30 +89,17 @@ Each database can belong to only one HA group.
 
 ## Versions
 
-### 1.1.3.1
-
-* Updated xSqlServerInstall Set-TargetResource to resolve infinite-restart issue reported 
-
-### 1.1.2.0
-
-* Updated xSQLServerInstall to align with preferred SQL security practices, specifically not adding System account as sysadmin.
-
-### 1.1.1.0
-
-* Fixed a bug in xSQLHAGroup and xWaitForSqlHAGroup when closing tokens, which may have caused the DSC engine to stop process occasionally.
-
-### 1.1.0.0
-
-* Removed requirement for CredSSP when configuring HA Groups.
-
 ### 1.0.0.0
 
-* Initial release with the following resources 
-    - **xSqlServerInstall**
+* Initial release based on version 1.1.3.1 of xSqlPs but with customisations pending a pull request back into that main repository. 
+This release includes the following resources 
+	- **xSqlAlias**
+	- **xSqlServerInstall**
     - **xSqlHAService**
     - **xSqlHAEndpoint**
     - **xSqlHAGroup**
     - **xWaitForSqlHAGroup**
+
 
 ## Examples
 ### Install SQL on a single node
@@ -180,6 +167,17 @@ Configuration Sql101
         SqlAdministratorCredential = $credential
         DependsOn = "[WindowsFeature]installdotNet35"
     }
+	
+	xSqlAlias aliasSQLProdTCP
+    {
+		Ensure = 'Present';
+		SQLServerName = 'SQLProd';
+		Protocol = 'tcp';
+		ServerName = 'sqlnode01.contoso.com';
+		TCPPort = 52001;
+		DependsOn = "[xSqlServerInstall]installSqlServer"
+    }
+	
     LocalConfigurationManager 
     { 
         CertificateId = $node.Thumbprint
