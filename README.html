@@ -1,0 +1,182 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>mlSqlPS README</title><style></style></head><body>
+<h1 id="mlsqlps">mlSqlPs</h1>
+<p>The <strong>mlSqlPs</strong> module contains the <strong>xSqlServerInstall</strong>, <strong>xSqlHAService</strong>, <strong>xSqlHAEndpoint</strong>, <strong>xSqlHAGroup</strong>, <strong>xWaitForSqlHAGroup</strong>, and <strong>xSqlAlias</strong> DSC resources for installing and configuring a SQL Server. </p>
+<h2 id="description">Description</h2>
+<p>The <strong>mlSqlPs</strong> module contains the <strong>xSqlServerInstall</strong>, <strong>xSqlHAService</strong>, <strong>xSqlHAEndpoint</strong>, <strong>xSqlHAGroup</strong>,  <strong>xWaitForSqlHAGroup</strong>, and <strong>xSqlAlias</strong> DSC resources for installing and configuring a SQL Server. 
+These DSC Resources allow you to install a SQL Server from software stored on a network or local share, enable SQL high availability service (HA), and configure SQL HA endpoint. </p>
+<p>Note: These resources assume familiarity with certain aspects of the SQL Server install process. 
+SQL Server Enterprise installer requires .NET 3.5 to be installed. 
+Therefore, DSC resources that install SQL Enterprise require .NET 3.5 sources to be present on the machine.   </p>
+<p>This module is a customised version of <strong>xSqlPs</strong>. While I will work to have my changes merged into the main stream, this module will contain latest changes.</p>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><strong>xSqlServerInstall</strong> installs SQL Enterprise on target machine. </li>
+<li><strong>xSqlHAService</strong> enables SQL high availability (HA) service on a given SQL instance. </li>
+<li><strong>xSqlHAEndpoint</strong> configures the given instance of SQL high availability service to listen port 5022 with given name, and assigns users that are allowed to communicate through the SQL endpoint. </li>
+<li><strong>xSqlHAGroup</strong>configures an SQL HA group. 
+If the HA group does not exist it will create one with the given name on given SQL instance and add the HA group database(s) to local SQL instance.</li>
+<li><strong>xWaitForSqlHAGroup</strong> waits for an SQL HA group to be ready by checking the state of the HA group of a given name in a given interval till either the HA group is discoverable or the number of retries reached its maximum.  </li>
+<li><strong>xSqlAlias</strong> configures Client Aliases in both native and wow6432node paths. Supports both tcp and named pipe protocols.</li>
+</ul>
+<h3 id="xsqlserverinstall">xSqlServerInstall</h3>
+<ul>
+<li><strong>InstanceName</strong>: The name of the SQL instance.</li>
+<li><strong>SourcePath</strong>: The share path of SQL server software.</li>
+<li><strong>SourcePathCredential</strong>: The credential that the VM could use to access a net share of SQL server software.</li>
+<li><strong>VersionID</strong>: The numeric value of the SQL version being installed. Default is 120</li>
+<li><strong>Features</strong>: List of names of SQL Server features to install.</li>
+<li><strong>SqlAdministratorCredential</strong>: The SQL Server Administrator credential.</li>
+<li><strong>UpdateEnabled</strong>: Controls if the install media should check for updates</li>
+<li><strong>SvcAccount</strong>: Specifies the service account for SQL DB Engine</li>
+<li><strong>SysAdminAccounts</strong>: Specifies the list of accounts to be added as sysadmins during install</li>
+<li><strong>AgentSvcAccount</strong>: Specifies the service account for SQL Agent</li>
+<li><strong>SqlCollation</strong>: Specifies the collation for the instance</li>
+<li><strong>InstallSqlDataDir</strong>: The path to install the system dbs to</li>
+<li><strong>SqlTempDBDir</strong>: The path for TempDB .mdf and .ldf</li>
+<li><strong>SqlUserDBDir</strong>: The default path for all User database .mdf/.ndf files</li>
+<li><strong>SqlUserDBLogDir</strong>: The default path for all User database .ldf files</li>
+<li><strong>SqlBackupDir</strong>: The default backup path for the instance</li>
+</ul>
+<h3 id="xsqlhaservice">xSqlHAService</h3>
+<ul>
+<li><strong>InstanceName</strong>: The name of the SQL instance.</li>
+<li><strong>SqlAdministratorCredential</strong>: The SQL Server Administrator credential.</li>
+<li><strong>ServiceCredential</strong>: Domain credential used to run SQL Service.</li>
+</ul>
+<h3 id="xsqlhaendpoint">xSqlHAEndpoint</h3>
+<ul>
+<li><strong>InstanceName</strong>: The name of the SQL instance.</li>
+<li><strong>AllowedUser</strong>: Unique name for HA database mirroring endpoint of the SQL instance.</li>
+<li><strong>PortNumber</strong>: The single port number (####) on which the SQL HA to listen to.</li>
+</ul>
+<h3 id="xsqlhagroup">xSqlHAGroup</h3>
+<ul>
+<li><strong>Name</strong>: The name of the SQL Availability Group.</li>
+<li><strong>Database</strong>: Array of databases on the local SQL instance. 
+Each database can belong to only one HA group.</li>
+<li><strong>ClusterName</strong>: The name of the Windows failover cluster for the availability group.</li>
+<li><strong>DatabaseBackupPath</strong>: The net share for SQL replication initialization,</li>
+<li><strong>InstanceName</strong>: Name of the SQL Instance. </li>
+<li><strong>EndPointName</strong>: Name of endpoint to access High Availability SQL instance. </li>
+<li><strong>DomainCredential</strong>: Domain credential to get list of cluster nodes.</li>
+<li><strong>SqlAdministratorCredential</strong>: SQL Server Administrator credential. </li>
+</ul>
+<h3 id="xwaitforsqlhagroup">xWaitForSqlHAGroup</h3>
+<ul>
+<li><strong>Name</strong>: The name of SQL High Availability Group.</li>
+<li><strong>ClusterName</strong>: The name of Windows failover cluster for the availability group.</li>
+<li><strong>RetryIntervalSec</strong>: Interval to check the HA group existency.</li>
+<li><strong>RetryCount</strong>: Maximum number of retries to check HA group existency.</li>
+<li><strong>InstanceName</strong>: The name of SQL instance.</li>
+<li><strong>DomainCredential</strong>: Domain credential could get list of cluster nodes.</li>
+<li><strong>SqlAdministratorCredential</strong>: SQL Server Administrator credential .</li>
+</ul>
+<h3 id="xsqlalias">xSqlAlias</h3>
+<ul>
+<li><strong>SQLServerName</strong>: The name of Alias (e.g. svr01\inst01).</li>
+<li><strong>ServerName</strong>: The name of real server.</li>
+<li><strong>Protocol</strong>: The protocol of either tcp or np (named pipes).</li>
+<li><strong>RetryCount</strong>: Maximum number of retries to check HA group existency.</li>
+<li><strong>TCPPort</strong>: The tcp port of the instance.</li>
+</ul>
+<h2 id="versions">Versions</h2>
+<h3 id="1-0-0-0">1.0.0.0</h3>
+<ul>
+<li>Initial release based on version 1.1.3.1 of xSqlPs but with customisations pending a pull request back into that main repository. 
+This release includes the following resources <ul>
+<li><strong>xSqlAlias</strong></li>
+<li><strong>xSqlServerInstall</strong></li>
+<li><strong>xSqlHAService</strong></li>
+<li><strong>xSqlHAEndpoint</strong></li>
+<li><strong>xSqlHAGroup</strong></li>
+<li><strong>xWaitForSqlHAGroup</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<h3 id="install-sql-on-a-single-node">Install SQL on a single node</h3>
+<p>This example installs SQL Server on a single node. 
+Note: This examples has prerequisites that must be met before it can be run. 
+It assumes that the .NET 3.5 source is present under C:\Software\sxs, that the SQL full enterprise installer is present under C:\Software\sql, and that a local self singed certificate is prepared.</p>
+<pre><code class="lang-powershell"><span class="hljs-comment"># Configuration to install SQL server database engine and management tools.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># A. Prepare a local self signed certificate with the following steps:</span>
+<span class="hljs-comment"># 1\. Install MakeCert.exe (Microsoft SDK 8.1 http://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx)</span>
+<span class="hljs-comment"># 2\. Open console with Administrator elevation, run the following:</span>
+<span class="hljs-comment">#     makecert -r -pe -n "CN=DSCDemo" -sky exchange -ss my -sr localMachine</span>
+<span class="hljs-comment"># B. Prepare software and run the configuration.</span>
+<span class="hljs-comment"># 1\. On the machine, create a folder as Software</span>
+<span class="hljs-comment"># 2\. On the machine, copy Windows Server 2012 R2 source\sxs to C:\Software\sxs</span>
+<span class="hljs-comment"># 3\. copy sql full enterprise installation software to C:\Software\sql</span>
+<span class="hljs-comment"># 4\. copy xSqlPs to $env:ProgramFiles\WindowsPowershell\Modules</span>
+<span class="hljs-comment"># 5\. Copy this file (sql101.ps1) to c:\DSCDemo</span>
+<span class="hljs-comment"># 6\. in powershell with administrator elevation, go to c:\DSCDemo, run .\sql101.ps1</span>
+<span class="hljs-variable">$certSubject</span> = <span class="hljs-string">"CN=DSCDemo"</span>
+<span class="hljs-variable">$keysFolder</span> = <span class="hljs-built_in">Join-Path</span> <span class="hljs-variable">$env:SystemDrive</span> -ChildPath <span class="hljs-string">"Keys"</span>
+<span class="hljs-variable">$cert</span> = dir Cert:\LocalMachine\My | ? { <span class="hljs-variable">$_</span>.Subject <span class="hljs-operator">-eq</span> <span class="hljs-variable">$certSubject</span> }
+<span class="hljs-keyword">if</span> (! (<span class="hljs-built_in">Test-Path</span> <span class="hljs-variable">$keysFolder</span> ))
+{
+    md <span class="hljs-variable">$keysFolder</span> | <span class="hljs-built_in">Out-Null</span>
+}
+<span class="hljs-variable">$certPath</span> = Export-Certificate -Cert <span class="hljs-variable">$cert</span> -FilePath (<span class="hljs-built_in">Join-Path</span> <span class="hljs-variable">$keysFolder</span> -ChildPath <span class="hljs-string">"Dscdemo.cer"</span>)
+<span class="hljs-variable">$ConfigData</span>=
+@{
+    AllNodes = @(
+       @{
+           NodeName = <span class="hljs-string">"localhost"</span>
+           CertificateFile = <span class="hljs-variable">$certPath</span>
+           Thumbprint = <span class="hljs-variable">$cert</span>.Thumbprint
+        }
+    )
+ }
+Configuration Sql101
+{
+    <span class="hljs-keyword">param</span>(
+        [Parameter(Mandatory=<span class="hljs-variable">$true</span>)]
+        [ValidateNotNullorEmpty()]
+        [PsCredential] <span class="hljs-variable">$credential</span>
+        )
+    Import-DscResource -Module xSqlPs
+   Node <span class="hljs-variable">$AllNodes</span>.NodeName
+   {
+
+    <span class="hljs-comment"># Install SQL Server</span>
+    WindowsFeature installdotNet35
+    {            
+        Ensure = <span class="hljs-string">"Present"</span>
+        Name = <span class="hljs-string">"Net-Framework-Core"</span>
+        Source = <span class="hljs-string">"c:\software\sxs"</span>
+    }
+
+    xSqlServerInstall installSqlServer
+    {
+        InstanceName = <span class="hljs-string">"PowerPivot"</span>
+        SourcePath = <span class="hljs-string">"c:\software\sql"</span>
+        Features= <span class="hljs-string">"SQLEngine,SSMS"</span>
+        SqlAdministratorCredential = <span class="hljs-variable">$credential</span>
+        DependsOn = <span class="hljs-string">"[WindowsFeature]installdotNet35"</span>
+    }
+
+    xSqlAlias aliasSQLProdTCP
+    {
+        Ensure = <span class="hljs-string">'Present'</span>;
+        SQLServerName = <span class="hljs-string">'SQLProd'</span>;
+        Protocol = <span class="hljs-string">'tcp'</span>;
+        ServerName = <span class="hljs-string">'sqlnode01.contoso.com'</span>;
+        TCPPort = <span class="hljs-number">52001</span>;
+        DependsOn = <span class="hljs-string">"[xSqlServerInstall]installSqlServer"</span>
+    }
+
+    LocalConfigurationManager 
+    { 
+        CertificateId = <span class="hljs-variable">$node</span>.Thumbprint
+        RebootNodeIfNeeded = <span class="hljs-variable">$true</span>
+    } 
+ }    
+}
+Sql101 -ConfigurationData <span class="hljs-variable">$ConfigData</span> -OutputPath .\Mof -credential (<span class="hljs-built_in">Get-Credential</span> -UserName <span class="hljs-string">"sa"</span> -Message <span class="hljs-string">"Enter password for SqlAdministrator sa"</span>)
+Set-DscLocalConfigurationManager .\Mof
+Start-DscConfiguration -Path .\Mof -ComputerName localhost -Wait -Verbose
+</code></pre>
+
+</body></html>
