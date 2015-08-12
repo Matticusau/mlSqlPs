@@ -301,6 +301,7 @@ function NetUse
     param
     (   
         [parameter(Mandatory)] 
+        [ValidateNotNullOrEmpty()]
         [string] $SharePath,
         
         [PSCredential]$SharePathCredential,

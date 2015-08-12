@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/ptgyc0e6gvnue6db/branch/master?svg=true)](https://ci.appveyor.com/project/Matticusau/mlsqlps/branch/master)
 
 # mlSqlPs
 
