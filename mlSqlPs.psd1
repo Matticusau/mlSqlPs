@@ -1,9 +1,8 @@
 
-
 @{
 
 
-ModuleVersion = '1.0.0.1'
+ModuleVersion = '1.0.0.2'
 GUID = 'abee25c0-d40a-4bf2-a04e-ed059aba377b'
 
 Author = 'Mlavery - blog.matticus.net'
