@@ -89,6 +89,10 @@ Each database can belong to only one HA group.
 
 ## Versions
 
+### 1.0.0.2
+
+* Fixed a bug as logged in Issue #1. Paths containing spaces are now correctly handled
+
 ### 1.0.0.0
 
 * Initial release based on version 1.1.3.1 of xSqlPs but with customisations pending a pull request back into that main repository. 
