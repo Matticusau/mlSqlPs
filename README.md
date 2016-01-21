@@ -89,6 +89,10 @@ Each database can belong to only one HA group.
 
 ## Versions
 
+### 1.0.0.3
+
+* Minor fix to the samples files
+
 ### 1.0.0.2
 
 * Fixed a bug as logged in Issue #1. Paths containing spaces are now correctly handled
@@ -169,6 +173,10 @@ Configuration Sql101
         SourcePath = "c:\software\sql"
         Features= "SQLEngine,SSMS"
         SqlAdministratorCredential = $credential
+        SqlTempDBDir = "E:\mssql\MSSQL.PowerPivot\Data"
+        SqlUserDBDir = "D:\mssql\MSSQL.PowerPivot\Data"
+        SqlUserDBLogDir = "D:\mssql\MSSQL.PowerPivot\Data"
+        SqlBackupDir = "F:\mssql\MSSQL.PowerPivot\Backup"
         DependsOn = "[WindowsFeature]installdotNet35"
     }
 	
@@ -192,4 +200,3 @@ Configuration Sql101
 Sql101 -ConfigurationData $ConfigData -OutputPath .\Mof -credential (Get-Credential -UserName "sa" -Message "Enter password for SqlAdministrator sa")
 Set-DscLocalConfigurationManager .\Mof
 Start-DscConfiguration -Path .\Mof -ComputerName localhost -Wait -Verbose
-```

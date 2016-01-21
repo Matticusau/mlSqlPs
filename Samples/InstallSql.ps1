@@ -10,8 +10,8 @@
 # 2. On the machine, please copy Windows Server 2012 R2 source\sxs to C:\Software\sxs
 # 3. copy sql software to C:\Software\sql
 # 4. copy xSqlPs to $env:ProgramFiles\WindowsPowershell\Modules
-# 5. Copy this file (sql101.ps1) to c:\demo
-# 6. in powershell with administrator elevation, go to c:\demo, run .\sql101.ps1
+# 5. Copy this file (InstallSql.ps1) to c:\demo
+# 6. in powershell with administrator elevation, go to c:\demo, run .\InstallSql.ps1
 
 
 $certSubject = "CN=DSCDemo"
@@ -36,7 +36,7 @@ $ConfigData=
     )
  }
 
-Configuration Sql101
+Configuration InstallSql
 {
     param(
         [Parameter(Mandatory=$true)]
@@ -44,7 +44,7 @@ Configuration Sql101
         [PsCredential] $credential
         )
 
-    Import-DscResource -Module xSqlPs
+    Import-DscResource -Module mlSqlPs
 
    Node $AllNodes.NodeName
    {
@@ -66,7 +66,15 @@ Configuration Sql101
         Features= "SQLEngine,SSMS"
 
         SqlAdministratorCredential = $credential
-
+       
+        SqlTempDBDir = "E:\mssql\MSSQL.PowerPivot\Data"
+        
+        SqlUserDBDir = "D:\mssql\MSSQL.PowerPivot\Data"
+        
+        SqlUserDBLogDir = "D:\mssql\MSSQL.PowerPivot\Data"
+        
+        SqlBackupDir = "F:\mssql\MSSQL.PowerPivot\Backup"
+        
         DependsOn = "[WindowsFeature]installdotNet35"
     }
 
@@ -77,7 +85,7 @@ Configuration Sql101
  }    
 }
 
-Sql101 -ConfigurationData $ConfigData -OutputPath .\Mof -credential (Get-Credential -UserName "sa" -Message "Enter password for SqlAdministrator sa")
+InstallSql -ConfigurationData $ConfigData -OutputPath .\Mof -credential (Get-Credential -UserName "sa" -Message "Enter password for SqlAdministrator sa")
 
 Set-DscLocalConfigurationManager .\Mof
 

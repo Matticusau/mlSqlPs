@@ -1,24 +1,24 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>mlSqlPS README</title><style></style></head><body>
-<h1 id="mlsqlps">mlSqlPs</h1>
-<p>The <strong>mlSqlPs</strong> module contains the <strong>xSqlServerInstall</strong>, <strong>xSqlHAService</strong>, <strong>xSqlHAEndpoint</strong>, <strong>xSqlHAGroup</strong>, <strong>xWaitForSqlHAGroup</strong>, and <strong>xSqlAlias</strong> DSC resources for installing and configuring a SQL Server. </p>
-<h2 id="description">Description</h2>
-<p>The <strong>mlSqlPs</strong> module contains the <strong>xSqlServerInstall</strong>, <strong>xSqlHAService</strong>, <strong>xSqlHAEndpoint</strong>, <strong>xSqlHAGroup</strong>,  <strong>xWaitForSqlHAGroup</strong>, and <strong>xSqlAlias</strong> DSC resources for installing and configuring a SQL Server. 
-These DSC Resources allow you to install a SQL Server from software stored on a network or local share, enable SQL high availability service (HA), and configure SQL HA endpoint. </p>
-<p>Note: These resources assume familiarity with certain aspects of the SQL Server install process. 
-SQL Server Enterprise installer requires .NET 3.5 to be installed. 
-Therefore, DSC resources that install SQL Enterprise require .NET 3.5 sources to be present on the machine.   </p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>README.md</title><style></style></head><body id="preview">
+<h1><a id="mlSqlPs_0"></a>mlSqlPs</h1>
+<p>The <strong>mlSqlPs</strong> module contains the <strong>xSqlServerInstall</strong>, <strong>xSqlHAService</strong>, <strong>xSqlHAEndpoint</strong>, <strong>xSqlHAGroup</strong>, <strong>xWaitForSqlHAGroup</strong>, and <strong>xSqlAlias</strong> DSC resources for installing and configuring a SQL Server.</p>
+<h2><a id="Description_4"></a>Description</h2>
+<p>The <strong>mlSqlPs</strong> module contains the <strong>xSqlServerInstall</strong>, <strong>xSqlHAService</strong>, <strong>xSqlHAEndpoint</strong>, <strong>xSqlHAGroup</strong>,  <strong>xWaitForSqlHAGroup</strong>, and <strong>xSqlAlias</strong> DSC resources for installing and configuring a SQL Server.
+These DSC Resources allow you to install a SQL Server from software stored on a network or local share, enable SQL high availability service (HA), and configure SQL HA endpoint.</p>
+<p>Note: These resources assume familiarity with certain aspects of the SQL Server install process.
+SQL Server Enterprise installer requires .NET 3.5 to be installed.
+Therefore, DSC resources that install SQL Enterprise require .NET 3.5 sources to be present on the machine.</p>
 <p>This module is a customised version of <strong>xSqlPs</strong>. While I will work to have my changes merged into the main stream, this module will contain latest changes.</p>
-<h2 id="resources">Resources</h2>
+<h2><a id="Resources_15"></a>Resources</h2>
 <ul>
-<li><strong>xSqlServerInstall</strong> installs SQL Enterprise on target machine. </li>
-<li><strong>xSqlHAService</strong> enables SQL high availability (HA) service on a given SQL instance. </li>
-<li><strong>xSqlHAEndpoint</strong> configures the given instance of SQL high availability service to listen port 5022 with given name, and assigns users that are allowed to communicate through the SQL endpoint. </li>
-<li><strong>xSqlHAGroup</strong>configures an SQL HA group. 
+<li><strong>xSqlServerInstall</strong> installs SQL Enterprise on target machine.</li>
+<li><strong>xSqlHAService</strong> enables SQL high availability (HA) service on a given SQL instance.</li>
+<li><strong>xSqlHAEndpoint</strong> configures the given instance of SQL high availability service to listen port 5022 with given name, and assigns users that are allowed to communicate through the SQL endpoint.</li>
+<li><strong>xSqlHAGroup</strong>configures an SQL HA group.
 If the HA group does not exist it will create one with the given name on given SQL instance and add the HA group database(s) to local SQL instance.</li>
-<li><strong>xWaitForSqlHAGroup</strong> waits for an SQL HA group to be ready by checking the state of the HA group of a given name in a given interval till either the HA group is discoverable or the number of retries reached its maximum.  </li>
+<li><strong>xWaitForSqlHAGroup</strong> waits for an SQL HA group to be ready by checking the state of the HA group of a given name in a given interval till either the HA group is discoverable or the number of retries reached its maximum.</li>
 <li><strong>xSqlAlias</strong> configures Client Aliases in both native and wow6432node paths. Supports both tcp and named pipe protocols.</li>
 </ul>
-<h3 id="xsqlserverinstall">xSqlServerInstall</h3>
+<h3><a id="xSqlServerInstall_25"></a>xSqlServerInstall</h3>
 <ul>
 <li><strong>InstanceName</strong>: The name of the SQL instance.</li>
 <li><strong>SourcePath</strong>: The share path of SQL server software.</li>
@@ -37,31 +37,31 @@ If the HA group does not exist it will create one with the given name on given S
 <li><strong>SqlUserDBLogDir</strong>: The default path for all User database .ldf files</li>
 <li><strong>SqlBackupDir</strong>: The default backup path for the instance</li>
 </ul>
-<h3 id="xsqlhaservice">xSqlHAService</h3>
+<h3><a id="xSqlHAService_45"></a>xSqlHAService</h3>
 <ul>
 <li><strong>InstanceName</strong>: The name of the SQL instance.</li>
 <li><strong>SqlAdministratorCredential</strong>: The SQL Server Administrator credential.</li>
 <li><strong>ServiceCredential</strong>: Domain credential used to run SQL Service.</li>
 </ul>
-<h3 id="xsqlhaendpoint">xSqlHAEndpoint</h3>
+<h3><a id="xSqlHAEndpoint_51"></a>xSqlHAEndpoint</h3>
 <ul>
 <li><strong>InstanceName</strong>: The name of the SQL instance.</li>
 <li><strong>AllowedUser</strong>: Unique name for HA database mirroring endpoint of the SQL instance.</li>
 <li><strong>PortNumber</strong>: The single port number (####) on which the SQL HA to listen to.</li>
 </ul>
-<h3 id="xsqlhagroup">xSqlHAGroup</h3>
+<h3><a id="xSqlHAGroup_57"></a>xSqlHAGroup</h3>
 <ul>
 <li><strong>Name</strong>: The name of the SQL Availability Group.</li>
-<li><strong>Database</strong>: Array of databases on the local SQL instance. 
+<li><strong>Database</strong>: Array of databases on the local SQL instance.
 Each database can belong to only one HA group.</li>
 <li><strong>ClusterName</strong>: The name of the Windows failover cluster for the availability group.</li>
 <li><strong>DatabaseBackupPath</strong>: The net share for SQL replication initialization,</li>
-<li><strong>InstanceName</strong>: Name of the SQL Instance. </li>
-<li><strong>EndPointName</strong>: Name of endpoint to access High Availability SQL instance. </li>
+<li><strong>InstanceName</strong>: Name of the SQL Instance.</li>
+<li><strong>EndPointName</strong>: Name of endpoint to access High Availability SQL instance.</li>
 <li><strong>DomainCredential</strong>: Domain credential to get list of cluster nodes.</li>
-<li><strong>SqlAdministratorCredential</strong>: SQL Server Administrator credential. </li>
+<li><strong>SqlAdministratorCredential</strong>: SQL Server Administrator credential.</li>
 </ul>
-<h3 id="xwaitforsqlhagroup">xWaitForSqlHAGroup</h3>
+<h3><a id="xWaitForSqlHAGroup_69"></a>xWaitForSqlHAGroup</h3>
 <ul>
 <li><strong>Name</strong>: The name of SQL High Availability Group.</li>
 <li><strong>ClusterName</strong>: The name of Windows failover cluster for the availability group.</li>
@@ -71,7 +71,7 @@ Each database can belong to only one HA group.</li>
 <li><strong>DomainCredential</strong>: Domain credential could get list of cluster nodes.</li>
 <li><strong>SqlAdministratorCredential</strong>: SQL Server Administrator credential .</li>
 </ul>
-<h3 id="xsqlalias">xSqlAlias</h3>
+<h3><a id="xSqlAlias_79"></a>xSqlAlias</h3>
 <ul>
 <li><strong>SQLServerName</strong>: The name of Alias (e.g. svr01\inst01).</li>
 <li><strong>ServerName</strong>: The name of real server.</li>
@@ -79,16 +79,20 @@ Each database can belong to only one HA group.</li>
 <li><strong>RetryCount</strong>: Maximum number of retries to check HA group existency.</li>
 <li><strong>TCPPort</strong>: The tcp port of the instance.</li>
 </ul>
-<h2 id="versions">Versions</h2>
-<h3 id="1-0-0-0">1.0.0.2</h3>
+<h2><a id="Versions_87"></a>Versions</h2>
+<h3><a id="1003_89"></a>1.0.0.3</h3>
 <ul>
-<li>Fixed a bug as logged in Issue #1. Paths containing spaces are now correctly handled
-</li>
+<li>Minor fix to the samples files</li>
 </ul>
-<h3 id="1-0-0-0">1.0.0.0</h3>
+<h3><a id="1002_93"></a>1.0.0.2</h3>
 <ul>
-<li>Initial release based on version 1.1.3.1 of xSqlPs but with customisations pending a pull request back into that main repository. 
-This release includes the following resources <ul>
+<li>Fixed a bug as logged in Issue #1. Paths containing spaces are now correctly handled</li>
+</ul>
+<h3><a id="1000_97"></a>1.0.0.0</h3>
+<ul>
+<li>Initial release based on version 1.1.3.1 of xSqlPs but with customisations pending a pull request back into that main repository.
+This release includes the following resources
+<ul>
 <li><strong>xSqlAlias</strong></li>
 <li><strong>xSqlServerInstall</strong></li>
 <li><strong>xSqlHAService</strong></li>
@@ -98,12 +102,12 @@ This release includes the following resources <ul>
 </ul>
 </li>
 </ul>
-<h2 id="examples">Examples</h2>
-<h3 id="install-sql-on-a-single-node">Install SQL on a single node</h3>
-<p>This example installs SQL Server on a single node. 
-Note: This examples has prerequisites that must be met before it can be run. 
+<h2><a id="Examples_109"></a>Examples</h2>
+<h3><a id="Install_SQL_on_a_single_node_110"></a>Install SQL on a single node</h3>
+<p>This example installs SQL Server on a single node.
+Note: This examples has prerequisites that must be met before it can be run.
 It assumes that the .NET 3.5 source is present under C:\Software\sxs, that the SQL full enterprise installer is present under C:\Software\sql, and that a local self singed certificate is prepared.</p>
-<pre><code class="lang-powershell"><span class="hljs-comment"># Configuration to install SQL server database engine and management tools.</span>
+<pre><code class="language-powershell"><span class="hljs-comment"># Configuration to install SQL server database engine and management tools.</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment"># A. Prepare a local self signed certificate with the following steps:</span>
 <span class="hljs-comment"># 1\. Install MakeCert.exe (Microsoft SDK 8.1 http://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx)</span>
@@ -159,9 +163,13 @@ Configuration Sql101
         SourcePath = <span class="hljs-string">"c:\software\sql"</span>
         Features= <span class="hljs-string">"SQLEngine,SSMS"</span>
         SqlAdministratorCredential = <span class="hljs-variable">$credential</span>
+        SqlTempDBDir = <span class="hljs-string">"E:\mssql\MSSQL.PowerPivot\Data"</span>
+        SqlUserDBDir = <span class="hljs-string">"D:\mssql\MSSQL.PowerPivot\Data"</span>
+        SqlUserDBLogDir = <span class="hljs-string">"D:\mssql\MSSQL.PowerPivot\Data"</span>
+        SqlBackupDir = <span class="hljs-string">"F:\mssql\MSSQL.PowerPivot\Backup"</span>
         DependsOn = <span class="hljs-string">"[WindowsFeature]installdotNet35"</span>
     }
-
+    
     xSqlAlias aliasSQLProdTCP
     {
         Ensure = <span class="hljs-string">'Present'</span>;
@@ -171,7 +179,7 @@ Configuration Sql101
         TCPPort = <span class="hljs-number">52001</span>;
         DependsOn = <span class="hljs-string">"[xSqlServerInstall]installSqlServer"</span>
     }
-
+    
     LocalConfigurationManager 
     { 
         CertificateId = <span class="hljs-variable">$node</span>.Thumbprint
